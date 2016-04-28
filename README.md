@@ -8,12 +8,12 @@ They need to be installed in the PATH variable of your computer.
 
 3.Python library of Numpy need to be installed.
 #Installation
-You can download the python script MCTS-RNA-Final.py and save it in the executable paths of your computer ,run this script from the shell. 
+You can download the python script MCTS-RNA.py and save it in the executable paths of your computer ,run this script from the shell. 
 #How to use MCTS-RNA?
 Once you downloaded the python script of MCTS-RNA and having installed all the requirements, you can execute MCTS-RNA from the shell. The inputs include the dot-bracket representation of target RNA secondary structure ,the target GC-content of the RNA sequence and GC-content error. The following are the examples and explanations of the inputs parameters.
 
 This is an example of the command in the shell:
-python MCTS-RNA-Final.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
+python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
 
 -s : The target RNA secondary structure.
 
@@ -25,7 +25,7 @@ RNA secondary structure used here is RF00007
 
 1.Solution with the GC-content constraint and GC-content error constraint
 
-python MCTS-RNA-Final.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
+python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
 
 search length:112
 
@@ -42,7 +42,7 @@ structure distance:1.0
 
 2.Solution without the GC-content constriant
 
-python MCTS-RNA-Final.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" 
+python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" 
 
 search length:112
 
