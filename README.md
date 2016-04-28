@@ -20,7 +20,9 @@ python MCTS-RNA-Final.py -f -s "...(((((..........)))))........((((((((......)))
 -GC: The target GC-content of the RNA sequence, choose vaule from the range [0,1]. The default value of the target GC-content is random, which means the GC-content of the output solution is any value in range [0,1]. 
 
 -d : The GC-content error of the solution, which is in range [0,0.02]. MCTS-RNA can output the sequence with more accurate GC-content with smaller GC-content error setting, the default value of the GC-content error is 0.02.
-#Example of the output ,RNA structure used is RF00007
+#Examples of the MCTS-RNA output
+RNA secondary structure used here is RF00007
+
 1.Solution with the GC-content constraint and GC-content error constraint
 
 python MCTS-RNA-Final.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
