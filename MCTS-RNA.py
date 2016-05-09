@@ -445,10 +445,6 @@ def MCTSnoGC(root, itermax, k, verbose = False):
                     k = random.choice(node.untriedPositions)
 
 
-        #print "depth of  tree:" + str(len(state.position)-len(state.GetPositions()))
-        #print k
-
-
         if k > len(str_uindex)-1:
             if node.untriedbpp!=[]:
                 m=random.choice(node.untriedbpp)
