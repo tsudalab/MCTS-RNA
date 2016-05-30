@@ -43,12 +43,7 @@ class RNAstructure:
                 posbase.insert(b[i],e[c[i]])
             mutated_s= ''.join(map(str, posbase))
             mutated_str1=RNA.fold(mutated_s)
-            #print mutated_str1
             mutated_str=mutated_str1[0]
-            #print mutated_str
-            #paired_pos,unpaired_pos=find_dif_str_position_between_target_and_predicted(s,mutated_str)
-            #print paired_pos
-            #print unpaired_pos
 
             d=0.0
             g=0.0
@@ -57,12 +52,6 @@ class RNAstructure:
                 if mutated_str[i]!=s[i]:
                     d=d+1
             g=(n-d)/n
-            #print "str_distance:" + "  " + str(str_distance)
-            #global str_value
-            #print "g:" + " "+ str(g)
-            #global str_distance
-            #print str_distance
-            #if g >str_distance:
             if g==1.0:
                 solution.append(mutated_s)
                 return g
@@ -80,13 +69,7 @@ class RNAstructure:
                 posbase.insert(b[i],e[c[i]])
             mutated_s= ''.join(map(str, posbase))
             mutated_str1=RNA.fold(mutated_s)
-            #print mutated_str1
             mutated_str=mutated_str1[0]
-            #print mutated_str
-            #paired_pos,unpaired_pos=find_dif_str_position_between_target_and_predicted(s,mutated_str)
-            #print paired_pos
-            #print unpaired_pos
-
             d=0.0
             g=0.0
             n=len(s)
@@ -94,12 +77,6 @@ class RNAstructure:
                 if mutated_str[i]!=s[i]:
                     d=d+1
             g=(n-d)/n
-            #print "str_distance:" + "  " + str(str_distance)
-            #global str_value
-            #print "g:" + " "+ str(g)
-            #global str_distance
-            #print str_distance
-            #if g >str_distance:
             if g==1.0:
                 solution.append(mutated_s)
                 return g
@@ -161,9 +138,6 @@ class RNAstructure:
         return[i for i in range(len(self.position)) if self.position[i] not in ["A","U","C","G","AU", "CG", "GC", "UA","GU","UG"]]
 
 
-
-# In[142]:
-
 class Node:
 
     def __init__(self, position = None, pt = None , parent = None, state = None):
@@ -198,8 +172,6 @@ class Node:
         self.wins += result
 
 
-# In[143]:
-
 def MCTS(root, itermax, k, verbose = False):
 
 
@@ -225,11 +197,6 @@ def MCTS(root, itermax, k, verbose = False):
         count_number1=0
         pa=[]
         upa=[]
-        #print node.untriedPositions
-        #print node.untriedbpp
-        #print node.untriedubpp
-
-
         while node.untriedubpp == [] or node.untriedbpp==[]:
 
             node = node.Selectnode()
@@ -244,11 +211,6 @@ def MCTS(root, itermax, k, verbose = False):
                 if len(node.untriedubpp)==4:
                     k = random.choice(node.untriedPositions)
 
-
-
-        #print "depth of  tree:" + str(len(state.position)-len(state.GetPositions()))
-        #print k
-        #print state.GetPositions()
         if k > len(str_uindex)-1:
             if node.untriedbpp!=[]:
                 #print node.untriedbpp
@@ -322,8 +284,6 @@ def MCTS(root, itermax, k, verbose = False):
 
         posbasep=state.position[len(str_uindex):state.n]
         posbase=state.position[0:len(str_uindex)]
-        #print posbasep
-        #print posbase
         e=list(itertools.chain(*posbasep))
         for i in range(len(a)):
             posbase.insert(b[i],e[c[i]])
@@ -393,7 +353,6 @@ def MCTS(root, itermax, k, verbose = False):
 
         while node != None:
             node.Update(re)
-            #print node.untriedPositions
             node = node.parentNode
 
     return seq, max_val, GCnum
@@ -422,7 +381,6 @@ def MCTSnoGC(root, itermax, k, verbose = False):
 
     running_time=time.time()
     out_time=running_time+60*10
-    #defined_GC=0.3
     rootnode = Node(state = root)
 
     for i in range(itermax):
@@ -438,8 +396,6 @@ def MCTSnoGC(root, itermax, k, verbose = False):
 
             node = node.Selectnode()
             state.SelectPosition(node.position,node.pt)
-            #if node.untriedPositions != []:
-                #k = node.untriedPositions[len(node.untriedPositions)-1]
         if node.untriedPositions != []:
             if k > len(str_uindex)-1:
                 if len(node.untriedbpp)==6:
@@ -447,11 +403,6 @@ def MCTSnoGC(root, itermax, k, verbose = False):
             else:
                 if len(node.untriedubpp)==4:
                     k = random.choice(node.untriedPositions)
-
-
-        #print "depth of  tree:" + str(len(state.position)-len(state.GetPositions()))
-        #print k
-
 
         if k > len(str_uindex)-1:
             if node.untriedbpp!=[]:
@@ -680,8 +631,6 @@ def find_dif_pos_ini():
             dif_pos_ini.append(str_index[i])
     return
 
-
-
 def find_dif_str_position_between_target_and_predicted(target_seq,predicted_seq):
     break_pairs=["AA","CC","GG","AG","CU","UC","UU","GA"]
     #break_pairs=["UU"]
@@ -740,8 +689,6 @@ def dif_str(predicted_seq):
     for i in range(len(str_index)):
         if str_index[i] not in paired:
             dif_pos_ini.append(str_index[i])
-
-
 
     return save_paired_pos,dif_pos_ini
 
@@ -1003,13 +950,6 @@ def GCcontent(defined_GC,getGC,some_paired_pos, predicted_seq,posl):
             elif predicted_seq[new_odd[i]]=="G":
                 predicted_seq[new_even[i]]="A"
 
-
-
-
-
-
-
-
     return predicted_seq
 
 
@@ -1058,19 +998,7 @@ def GCcontent1(defined_GC,getGC,some_paired_pos, predicted_seq,posl):
             else:
                 predicted_seq[new_even[i]]="G"
 
-
-
-
-
-
-
-
     return predicted_seq
-
-
-
-
-
 
 def measureGC(generate_seq):
     n=len(generate_seq)
@@ -1090,8 +1018,6 @@ def measureGC(generate_seq):
             indexnotGC.append(i)
 
     getGC=cont/n
-
-
     return getGC
 
 def  calculate_GC_numbers(eposl,defined_GC,need,poslalpha):
@@ -1103,12 +1029,8 @@ def  calculate_GC_numbers(eposl,defined_GC,need,poslalpha):
     needGC=len(s)*defined_GC-cunnt
     if needGC>0:
         real=round(needGC/2,0)
-    #else:
     else:
         real=0
-
-
-
     return real
 
 
@@ -1137,14 +1059,11 @@ def calculate__pseudo_sequence_position(seq):
 
     return struc,ustruc,pseu1
 
-
-
 def calculate__pseudo_mfe_and_str(sequence):
     rnafold= pseudoknot(sequence)
     mfe=rnafold[1]
     str_v=rnafold[0]
     return mfe,str_v
-
 
 def pseudoknot(se):
 
