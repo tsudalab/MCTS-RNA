@@ -1,4 +1,4 @@
-
+from subprocess import Popen, PIPE
 from math import *
 import random
 import numpy as np
@@ -162,6 +162,7 @@ class RNAstructure:
 
 
 
+# In[142]:
 
 class Node:
 
@@ -197,13 +198,13 @@ class Node:
         self.wins += result
 
 
-
+# In[143]:
 
 def MCTS(root, itermax, k, verbose = False):
 
 
     running_time=time.time()
-    out_time=running_time+60*50
+    out_time=running_time+60*10
     #defined_GC=0.3
     rootnode = Node(state = root)
     #node = rootnode # important !    this node is different with state / node is the tree node
@@ -245,6 +246,9 @@ def MCTS(root, itermax, k, verbose = False):
 
 
 
+        #print "depth of  tree:" + str(len(state.position)-len(state.GetPositions()))
+        #print k
+        #print state.GetPositions()
         if k > len(str_uindex)-1:
             if node.untriedbpp!=[]:
                 #print node.untriedbpp
@@ -329,8 +333,11 @@ def MCTS(root, itermax, k, verbose = False):
         ini_str_pool=[]
         GC_pool=[]
         index_seq=0
+        if defined_pseudo==1:
+            some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str(mutated_s)# this is the pseudoknot structure
+        else:
+            some_str_mfe,some_str_value=calculate_mfe_and_str(mutated_s)#this is the nest structures
 
-        some_str_mfe,some_str_value=calculate_mfe_and_str(mutated_s)
         some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
         ini_seq_pool.append(mutated_s)
         ini_str_pool.append(some_str_distance)
@@ -344,7 +351,10 @@ def MCTS(root, itermax, k, verbose = False):
             mutated_seq2=''.join(map(str, mutated_seq1))
             GCnum=measureGC(mutated_seq2)
             GC_pool.append(GCnum)
-            kkk=RNA.fold(mutated_seq2)[0]
+            if defined_pseudo==1:
+                kkk=pseudoknot(mutated_seq2)[0]
+            else:
+                kkk=RNA.fold(mutated_seq2)[0]
             new_str_distance=calculate_structure_distance(s,len(s),kkk)
             some_str_value=kkk
             some_ini_seq=mutated_seq2
@@ -357,34 +367,28 @@ def MCTS(root, itermax, k, verbose = False):
                 break
         max_idx = np.argmax(ini_str_pool)
         GCnew=GC_pool[max_idx]
-        #min_idx
+
 
         max_val = ini_str_pool[max_idx]
         seq=ini_seq_pool[index_seq]
         ggg=abs(defined_GC-GCnum)
         gggg=abs(defined_GC-GCnew)
+        #print GCnum
         if ini_str_pool[index_seq]==1.0 and ggg<=defined_gd:
             break
 
         if ini_str_pool[index_seq]==1.0:
-            if ggg<=0.05:
-                re=2.0+1.0
-            if 0.05<ggg<=0.1:
+            if ggg<=0.01:
                 re=1.0+1.0
-            if 0.1<ggg<=0.15:
-                re=0.5+1.0
-            if   ggg>0.15:
-                re=0.0+1.0
-        if max_val<1.0:
-            if  gggg<=0.05:
-                re=2.0+max_val
-            if 0.05<gggg<=0.1:
-                re=1.0+max_val
-            if 0.1< gggg<=0.15:
-                re=0.5+max_val
-            if  gggg>0.15:
-                re=0.0+max_val
 
+            else:
+                re=1.0+0.0
+
+        if max_val<1.0:
+           if gggg<=0.01:
+               re=1.0+max_val
+           else:
+               re=0.0+max_val
 
 
         while node != None:
@@ -445,6 +449,10 @@ def MCTSnoGC(root, itermax, k, verbose = False):
                     k = random.choice(node.untriedPositions)
 
 
+        #print "depth of  tree:" + str(len(state.position)-len(state.GetPositions()))
+        #print k
+
+
         if k > len(str_uindex)-1:
             if node.untriedbpp!=[]:
                 m=random.choice(node.untriedbpp)
@@ -479,8 +487,11 @@ def MCTSnoGC(root, itermax, k, verbose = False):
         ini_str_pool=[]
         GC_pool=[]
         index_seq=0
+        if defined_pseudo==1:
+            some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str(mutated_s)# this is the pseudoknot structure
+        else:
+            some_str_mfe,some_str_value=calculate_mfe_and_str(mutated_s)#this is the nest structures
 
-        some_str_mfe,some_str_value=calculate_mfe_and_str(mutated_s)
         some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
         ini_seq_pool.append(mutated_s)
         ini_str_pool.append(some_str_distance)
@@ -495,7 +506,10 @@ def MCTSnoGC(root, itermax, k, verbose = False):
             mutated_seq2=''.join(map(str, mutated_seq1))
             GCnum=measureGC(mutated_seq2)
             GC_pool.append(GCnum)
-            kkk=RNA.fold(mutated_seq2)[0]
+            if defined_pseudo==1:
+                kkk=pseudoknot(mutated_seq2)[0]
+            else:
+                kkk=RNA.fold(mutated_seq2)[0]
             new_str_distance=calculate_structure_distance(s,len(s),kkk)
             some_str_value=kkk
             some_ini_seq=mutated_seq2
@@ -1103,6 +1117,47 @@ def error_check(defined_GC1,defined_gd1,s1,d1):
     if defined_GC1>1.0 or defined_GC1<0.0:
         print "Error,please input a right range in [0, 1.0]"
 
+def calculate__pseudo_sequence_position(seq):
+    stack = []
+    struc = []
+    pseu=[]
+    pseu1=[]
+    ustruc=[]
+    for i in xrange(len(seq)):
+        if seq[i] == '(':
+            stack.append(i)
+        if seq[i] == ')':
+            struc.append((stack.pop(), i))
+        if seq[i]=='.':
+            ustruc.append(i)
+        if seq[i]=='[':
+            pseu.append(i)
+        if seq[i]==']':
+            pseu1.append((pseu.pop(),i))
+
+    return struc,ustruc,pseu1
+
+
+
+def calculate__pseudo_mfe_and_str(sequence):
+    rnafold= pseudoknot(sequence)
+    mfe=rnafold[1]
+    str_v=rnafold[0]
+    return mfe,str_v
+
+
+def pseudoknot(se):
+
+    cmd = ["RNAPKplex","-e","-8.10"]
+    #tmpdir = mkdtemp()
+
+    p = Popen(cmd, stdin = PIPE, stdout = PIPE)
+    print >> p.stdin, se
+    p.stdin.close()
+    t = p.stdout.readlines()[-1].strip().split(None, 1)
+    p.stdout.close()
+    return t
+
 
 
 if __name__ == "__main__":
@@ -1110,17 +1165,45 @@ if __name__ == "__main__":
     BASEPAIRS = ["AU", "CG", "GC", "UA"]
     bases="AGCU"
 
+    file = open('rfam_structures', 'r')
+    data=file.readlines()
+
+    h1=[]
+    file = open('antaRNAdata', 'r')
+    data1=file.readlines()
+    h=[]
+    len1=[]
+    len2=[]
+    len3=[]
+    for i in range(len(data)):
+        h.append(data[i].strip())
+        if len(h[i])<=100:
+            len1.append(h[i])
+        if 100<len(h[i])<=200:
+            len2.append(h[i])
+        if 200<len(h[i])<=300:
+            len3.append(h[i])
+    for i in range(len(data)):
+        h1.append(data[i].strip())
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', dest='action', action='store_const',const=None,help="monte carlo tree search for RNA inverse folding")
     parser.add_argument('-s',help="input the dot-branket representation of the RNA secondary structure")
-    parser.add_argument('-GC',default=2.0,help="input the target GC content,the default is no GC content constraint")
+    parser.add_argument('-GC',default=2.0,help="input the target GC content,the default GC-content is 0.5")
     parser.add_argument('-d',default=0.02,help="input the GC content error range [0, 0.02],the default GC-content error is 0.02, we recommend to choose 0.01")
+    parser.add_argument('-pk',default=1, help="this is for handling pseduoknot structures, you can use different pseduoknot prediction software, value=1 means choose RNAPKplex")
+
     parsed_args = parser.parse_args()
     s=getattr(parsed_args, 's')
     defined_GC=float(getattr(parsed_args, 'GC'))
     defined_gd=float(getattr(parsed_args,'d'))
+    defined_pseudo=float(getattr(parsed_args,'pk'))
+    if defined_pseudo==1:
+        str_index1,str_uindex1,pseu12=calculate__pseudo_sequence_position(s)
+        str_index=str_index1+pseu12
+        str_uindex=str_uindex1
+    else:
+        str_index,str_uindex=calculate_sequence_position(s)
 
-    str_index,str_uindex=calculate_sequence_position(s)
 
     midea=getbasepairs(str_index)#### this is global varable
     copy_str_uindex=getunbases(str_uindex)# unpaired bases ## this is global varable
