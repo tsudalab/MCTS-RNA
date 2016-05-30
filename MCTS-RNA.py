@@ -1105,16 +1105,6 @@ def error_check(defined_GC1,defined_gd1,s1,d1):
 
 
 
-
-
-
-
-
-
-
-
-# In[145]:
-
 if __name__ == "__main__":
 
     BASEPAIRS = ["AU", "CG", "GC", "UA"]
@@ -1143,7 +1133,7 @@ if __name__ == "__main__":
 
     if defined_GC<=1.0 and defined_GC>=0.0:
         best_str,GC,run_time=UCTRNA()
-        if best_str==1.0 and run_time<=300:
+        if best_str==1.0:
 
            print "running time:"+str(run_time)
            print "GC content:"+str(GC)
