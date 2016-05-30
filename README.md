@@ -8,12 +8,16 @@ They need to be installed in the PATH variable of your computer.
 
 3.Python library of Numpy need to be installed.
 #Installation
-You can download the python script MCTS-RNA.py and save it in the executable paths of your computer ,run this script from the shell. 
+You can download the python script MCTS-RNA.py and save it in the executable paths of your computer, run this script from the shell. 
 #How to use MCTS-RNA?
 Once you downloaded the python script of MCTS-RNA and having installed all the requirements, you can execute MCTS-RNA from the shell. The inputs include the dot-bracket representation of target RNA secondary structure ,the target GC-content of the RNA sequence and GC-content error. The following are the examples and explanations of the inputs parameters.
 
-This is an example of the command in the shell:
+This is an example of the command in the shell for nested RNA structures.
 python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
+
+This is an example of the command in the shell for pseudoknot RNA structures.
+python MCTS-RNA.py -f -s "....(((((.[[[[.))))).........]]]]..." -GC 0.4 -d 0.02 -pk 1
+
 
 -s : The target RNA secondary structure.
 
@@ -21,38 +25,5 @@ python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(
 
 -d : The GC-content error of the solution, which is in range [0,0.02]. MCTS-RNA can output the sequence with more accurate GC-content with smaller GC-content error setting, the default value of the GC-content error is 0.02.
 
--pk: choose different software by setting different vaules and the default vaule is 1 , currently MCTS-RNA only uses RNAPKplex to predict pseudoknot structures. 
+-pk: choose different software by setting different vaules and the default vaule is 1 , currently MCTS-RNA only uses RNAPKplex (-pk 1) to predict pseudoknot structures. 
 
-#Examples of the MCTS-RNA output
-RNA secondary structure used here is RF00007
-
-1.Solution with the GC-content constraint and GC-content error constraint
-
-python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01
-
-search length:112
-
-Solution:GACGCGCCUUUAAGUUUUGGCGCCGCCUCUCGCGCCCCCCGUGCUGGGGGCGCAGGGCCGCAUACGCCCUCAACGCUAGAAUACGGCCUCGGGCCCAGCAACCCCCCGCCGGGGGCCCUGAACCCCCUGCGGGUCAGGAACGGCGGCCCGGCCG
-
-running time:4.51990914345
-
-GC content:0.746753246753
-
-GC distance:0.00324675324675
-
-structure distance:1.0
-
-
-2.Solution without the GC-content constriant
-
-python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" 
-
-search length:112
-
-solution:UUCCGGGCCUCUUCGUAUGCCCGAAAUAAUUAUCCGUCCUCUAGUGGACGGAUCCGGGGACUUAACCCGGUCUUUCGCCGCUCGGUACUGGUCGGAUGGAAGCUUAUCUACCUUGGUCUACGCAAGGCAGAUACACGCGUAGCCCCGACGUACC
-
-running time:0.27837896347
-
-GC-content:0.564935064935
-
-structure distance:1.0
