@@ -1077,33 +1077,10 @@ def pseudoknot(se):
     p.stdout.close()
     return t
 
-
-
 if __name__ == "__main__":
 
-    #BASEPAIRS = ["AU", "CG", "GC", "UA"]
-    #bases="AGCU"
-
-    #file = open('rfam_structures', 'r')
-    #data=file.readlines()
-
-    #h1=[]
-    #file = open('antaRNAdata', 'r')
-    #data1=file.readlines()
-    #h=[]
-    #len1=[]
-    #len2=[]
-    #len3=[]
-    #for i in range(len(data)):
-        #h.append(data[i].strip())
-        #if len(h[i])<=100:
-            #len1.append(h[i])
-        #if 100<len(h[i])<=200:
-            #len2.append(h[i])
-        #if 200<len(h[i])<=300:
-            #len3.append(h[i])
-    #for i in range(len(data)):
-        #h1.append(data[i].strip())
+    BASEPAIRS = ["AU", "CG", "GC", "UA"]
+    bases="AGCU"
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', dest='action', action='store_const',const=None,help="monte carlo tree search for RNA inverse folding")
     parser.add_argument('-s',help="input the dot-branket representation of the RNA secondary structure")
@@ -1122,8 +1099,6 @@ if __name__ == "__main__":
         str_uindex=str_uindex1
     else:
         str_index,str_uindex=calculate_sequence_position(s)
-
-
     midea=getbasepairs(str_index)#### this is global varable
     copy_str_uindex=getunbases(str_uindex)# unpaired bases ## this is global varable
     a= calculate_a(str_index)
@@ -1131,8 +1106,6 @@ if __name__ == "__main__":
     c=calculate_c(a)
     d=calculate_d(midea)
     ini_seq,ini_str_seq=getwholesequence(b,c ,d , copy_str_uindex)
-
-
     if defined_GC<=1.0 and defined_GC>=0.0:
         best_str,GC,run_time=UCTRNA()
         if best_str==1.0:
