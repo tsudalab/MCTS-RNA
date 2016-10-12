@@ -1081,29 +1081,29 @@ def pseudoknot(se):
 
 if __name__ == "__main__":
 
-    BASEPAIRS = ["AU", "CG", "GC", "UA"]
-    bases="AGCU"
+    #BASEPAIRS = ["AU", "CG", "GC", "UA"]
+    #bases="AGCU"
 
-    file = open('rfam_structures', 'r')
-    data=file.readlines()
+    #file = open('rfam_structures', 'r')
+    #data=file.readlines()
 
-    h1=[]
-    file = open('antaRNAdata', 'r')
-    data1=file.readlines()
-    h=[]
-    len1=[]
-    len2=[]
-    len3=[]
-    for i in range(len(data)):
-        h.append(data[i].strip())
-        if len(h[i])<=100:
-            len1.append(h[i])
-        if 100<len(h[i])<=200:
-            len2.append(h[i])
-        if 200<len(h[i])<=300:
-            len3.append(h[i])
-    for i in range(len(data)):
-        h1.append(data[i].strip())
+    #h1=[]
+    #file = open('antaRNAdata', 'r')
+    #data1=file.readlines()
+    #h=[]
+    #len1=[]
+    #len2=[]
+    #len3=[]
+    #for i in range(len(data)):
+        #h.append(data[i].strip())
+        #if len(h[i])<=100:
+            #len1.append(h[i])
+        #if 100<len(h[i])<=200:
+            #len2.append(h[i])
+        #if 200<len(h[i])<=300:
+            #len3.append(h[i])
+    #for i in range(len(data)):
+        #h1.append(data[i].strip())
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', dest='action', action='store_const',const=None,help="monte carlo tree search for RNA inverse folding")
     parser.add_argument('-s',help="input the dot-branket representation of the RNA secondary structure")
