@@ -25,5 +25,5 @@ python MCTS-RNA.py -f -s "....(((((.[[[[.))))).........]]]]..." -GC 0.4 -d 0.02 
 
 -d : The GC-content error of the solution, which is in range [0,0.02]. MCTS-RNA can output the sequence with more accurate GC-content with smaller GC-content error setting, the default value of the GC-content error is 0.02.
 
--pk: choose different software by setting different vaules and the default vaule is 1 , currently MCTS-RNA only uses RNAPKplex (-pk 1) to predict pseudoknot structures. 
+-pk: degin psudoknot-free structure by setting -pk 0 and design pseudoknot structure by setting -pk 1 (currently MCTS-RNA only uses RNAPKplex) to predict pseudoknot structures. 
 
