@@ -145,6 +145,7 @@ class Node:
         self.pt = pt
         self.parentNode = parent
         self.childNodes = []
+        self.child=None
         self.wins = 0
         self.visits = 0
         self.untriedSearches = state.GetSearch()
@@ -164,6 +165,7 @@ class Node:
         if k in self.untriedPositions:
             self.untriedPositions.remove(k)
         self.childNodes.append(n)
+        self.child=n
         return n
 
     def Update(self, result):
@@ -210,6 +212,9 @@ def MCTS(root, itermax, k, verbose = False):
             else:
                 if len(node.untriedubpp)==4:
                     k = random.choice(node.untriedPositions)
+            if node.untriedbpp != 6 or node.untriedubpp!=4:
+                if node.child!=None:
+                    k=node.child.pt
 
         if k > len(str_uindex)-1:
             if node.untriedbpp!=[]:
