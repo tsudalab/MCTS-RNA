@@ -12,7 +12,7 @@ You can download the python script MCTS-RNA.py and save it in the executable pat
 
 #Parameters in MCTS-RNA
 
-There are two parameters in MCTS-RNA, one is expansion threshold \beta
+There are two parameters in MCTS-RNA, one is expansion threshold $\beta$
 
 
 
