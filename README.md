@@ -10,9 +10,8 @@ They need to be installed in the PATH variable of your computer.
 #Installation
 You can download the python script MCTS-RNA.py and save it in the executable paths of your computer, run this script from the shell. 
 
-#Parameters in MCTS-RNA
 
-There are two parameters in MCTS-RNA, one is expansion threshold /beta
+
 
 
 
