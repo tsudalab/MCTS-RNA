@@ -127,13 +127,8 @@ class RNAstructure:
         return [i for i in np.arange(0,4) if self.search[i] not in ["A","U","C","G"]]
     def Getbpp(self):
         return [i for i in np.arange(4,10) if self.search[i] not in ["AU", "CG", "GC", "UA","GU","UG"]]
-
-
-
-
     def GetSearch(self):
         return [i for i in range(len(self.search)) if self.search[i] not in ["A","U","C","G","AU", "CG", "GC", "UA","GU","UG"]]
-
     def GetPositions(self):
         return[i for i in range(len(self.position)) if self.position[i] not in ["A","U","C","G","AU", "CG", "GC", "UA","GU","UG"]]
 
@@ -152,7 +147,7 @@ class Node:
         self.untriedubpp=state.Getubpp()
         self.untriedbpp=state.Getbpp()
         self.untriedPositions=state.GetPositions()
-        #self.mutated_sequence=state.
+ 
 
     def Selectnode(self):
 
@@ -179,9 +174,7 @@ def MCTS(root, itermax, k, verbose = False):
 
     running_time=time.time()
     out_time=running_time+60*10
-    #defined_GC=0.3
     rootnode = Node(state = root)
-    #node = rootnode # important !    this node is different with state / node is the tree node
     state = root.Clone() # but this state is the state of the initialization .  too important !!!
 
 
@@ -227,8 +220,6 @@ def MCTS(root, itermax, k, verbose = False):
         else:
             if node.untriedubpp!=[]:
                 m=random.choice(node.untriedubpp)
-                #print node.untriedubpp
-                #print m
                 node.untriedubpp.remove(m)
                 state.SelectPosition(m,k)
                 node=node.Addnode(m,k,state)
@@ -293,13 +284,11 @@ def MCTS(root, itermax, k, verbose = False):
         for i in range(len(a)):
             posbase.insert(b[i],e[c[i]])
         mutated_s= ''.join(map(str, posbase))
-        #print mutated_s
         ini_seq_pool=[]
         ini_str_pool=[]
         GC_pool=[]
         index_seq=0
         if defined_pseudo==1:
-            #some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str(mutated_s)# this is the pseudoknot structure
             some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str_pkiss(mutated_s)
             some_str_distance=calculate_structure_distance_pKiss(str_index,len(str_index),some_str_value)
 
@@ -308,8 +297,6 @@ def MCTS(root, itermax, k, verbose = False):
             some_str_mfe,some_str_value=calculate_mfe_and_str(mutated_s)#this is the nest structures
             some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
 
-
-        #some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
         ini_seq_pool.append(mutated_s)
         ini_str_pool.append(some_str_distance)
         GCnum=measureGC(mutated_s)
@@ -325,8 +312,6 @@ def MCTS(root, itermax, k, verbose = False):
             if defined_pseudo==1:
                 mfe,kkk=pseudoknot_pkiss(mutated_seq2)
                 new_str_distance=calculate_structure_distance_pKiss(str_index+str_uindex,len(str_index+str_uindex),kkk)
-                #print new_str_distance
-                #kkk=pseudoknot(mutated_seq2)[0]
             else:
                 kkk=RNA.fold(mutated_seq2)[0]
                 new_str_distance=calculate_structure_distance(s,len(s),kkk)
@@ -347,7 +332,6 @@ def MCTS(root, itermax, k, verbose = False):
         seq=ini_seq_pool[index_seq]
         ggg=abs(defined_GC-GCnum)
         gggg=abs(defined_GC-GCnew)
-        #print GCnum
         if ini_str_pool[index_seq]==1.0 and ggg<=defined_gd:
             break
 
@@ -534,22 +518,14 @@ def calculate_structure_distance_pKiss(structure_s, str_length ,some_str_value):
     unpaired_str=str_uindex
     struc,ustruc=calculate__pseudo_sequence_position_pKiss(some_str_value)
     structure_s_new=struc+ustruc
-    #print structure_s
-    #print structure_s_new
-    #print paired_str_new
-    #print paired_str
     sdt=0.0
     sd=0.0
     for i in range(len(str_index)):
         if paired_str[i] not in struc:
-            #print structure_s[i]
             sd=sd+1
     for i in range(len(str_uindex)):
         if unpaired_str[i] not in ustruc:
             sd=sd+1
-    #for i in range(len())
-    #for i in range(len(paired_str_new)):
-
     sdt=(len(structure_s)-sd)/len(structure_s)
     return sdt
 
@@ -717,7 +693,6 @@ def dif_str(predicted_seq):
     ori_paired_pos=[]
     ori_unpaired_pos=[]
     paired_dif_pos=[]
-    #print predicted_seq
     paired,unpaired=calculate_sequence_position(predicted_seq)
     for i in range(len(paired)):
         if paired[i] not in str_index:
@@ -794,7 +769,6 @@ def GC_pairreplace(ini_seq, dif_ini_GC,some_paired):
 def check_seq_base(some_paired_pos, predicted_seq,posl):
     check_even=[]
     check_odd=[]
-    #print predicted_seq
     A_change=["G","C"]
     C_change=["A","U"]
     U_change=["U","C"]
@@ -868,7 +842,6 @@ def check_GC_base3(some_dif_ini,predicted_seq,posl,defined_GC):## assign GC or C
         if some_dif_ini[i] not in posl:
             new_dif_ini.append(some_dif_ini[i])
     a1=calculate_a(new_dif_ini)
-    #for i in range(len(some_dif_ini)):
 
 
 
@@ -1158,15 +1131,11 @@ def calculate__pseudo_mfe_and_str_RNApKplex(sequence):
 
 def calculate__pseudo_mfe_and_str_pkiss(sequence):
     mfe,str_v= pseudoknot_pkiss(sequence)
-    #mfe=rnafold[1]
-    #str_v=rnafold[0]
     return mfe,str_v
 
 def pseudoknot_RNApKplex(se):
 
     cmd = ["RNAPKplex","-e","-8.10"]
-    #tmpdir = mkdtemp()
-
     p = Popen(cmd, stdin = PIPE, stdout = PIPE)
     print >> p.stdin, se
     p.stdin.close()
@@ -1174,27 +1143,20 @@ def pseudoknot_RNApKplex(se):
     p.stdout.close()
     return t
 
-
 def checkForpKiss(self):
     pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE,shell=True).communicate()[0].strip()
     if not (len(pKiss_output) > 0 and pKiss_output.find("found") == -1 and pKiss_output.find(" no ") == -1):
-        self.error = "No pKiss found\nIt seems that pKiss is not installed on your machine. Please do so!\nYou can get it at http://bibiserv2.cebitec.uni-bielefeld.de/pkiss"
+        self.error = "Please install Pkiss"
 
 
 def pseudoknot_pkiss(se):
 
     cmd = ["pKiss_mfe",se]
-    #tmpdir = mkdtemp()
-
     p = Popen(cmd, stdin = PIPE, stdout = PIPE)
-    #print >> p.stdin, se
-    #p.stdin.close()
     t = p.stdout.read().split("\n");
-    #structure = "." * len(se)
     if (len(t) > 1):
         mfe = "".join(t[1].split(" ")[1])
         structure= "".join(t[1].split(" ")[3])
-    #print structure
     p.stdout.close()
     return mfe, structure
 
