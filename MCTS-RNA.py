@@ -299,11 +299,17 @@ def MCTS(root, itermax, k, verbose = False):
         GC_pool=[]
         index_seq=0
         if defined_pseudo==1:
-            some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str(mutated_s)# this is the pseudoknot structure
+            #some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str(mutated_s)# this is the pseudoknot structure
+            some_str_mfe,some_str_value=calculate__pseudo_mfe_and_str_pkiss(mutated_s)
+            some_str_distance=calculate_structure_distance_pKiss(str_index,len(str_index),some_str_value)
+
+
         else:
             some_str_mfe,some_str_value=calculate_mfe_and_str(mutated_s)#this is the nest structures
+            some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
 
-        some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
+
+        #some_str_distance=calculate_structure_distance(s,len(s),some_str_value)
         ini_seq_pool.append(mutated_s)
         ini_str_pool.append(some_str_distance)
         GCnum=measureGC(mutated_s)
@@ -317,10 +323,13 @@ def MCTS(root, itermax, k, verbose = False):
             GCnum=measureGC(mutated_seq2)
             GC_pool.append(GCnum)
             if defined_pseudo==1:
-                kkk=pseudoknot(mutated_seq2)[0]
+                mfe,kkk=pseudoknot_pkiss(mutated_seq2)
+                new_str_distance=calculate_structure_distance_pKiss(str_index+str_uindex,len(str_index+str_uindex),kkk)
+                #print new_str_distance
+                #kkk=pseudoknot(mutated_seq2)[0]
             else:
                 kkk=RNA.fold(mutated_seq2)[0]
-            new_str_distance=calculate_structure_distance(s,len(s),kkk)
+                new_str_distance=calculate_structure_distance(s,len(s),kkk)
             some_str_value=kkk
             some_ini_seq=mutated_seq2
             ini_seq_pool.append(mutated_seq2)
@@ -350,10 +359,10 @@ def MCTS(root, itermax, k, verbose = False):
                 re=1.0+0.0
 
         if max_val<1.0:
-           if gggg<=0.01:
-               re=1.0+max_val
-           else:
-               re=0.0+max_val
+            if gggg<=0.01:
+                re=1.0+max_val
+            else:
+                re=0.0+max_val
 
 
         while node != None:
@@ -1082,6 +1091,93 @@ def pseudoknot(se):
     p.stdout.close()
     return t
 
+
+def calculate__pseudo_sequence_position_pKiss(seq):
+    stack = []
+    struc = []
+    pseu=[]
+    pseu1=[]
+    ustruc=[]
+    pseularg=[]
+    pseularg1=[]
+    pseupk=[]
+    pseupk1=[]
+    for i in xrange(len(seq)):
+        if seq[i] == '(':
+            stack.append(i)
+        if seq[i] == ')':
+            struc.append((stack.pop(), i))
+        if seq[i]=='.':
+            ustruc.append(i)
+        if seq[i]=='[':
+            pseu.append(i)
+        if seq[i]==']':
+            pseu1.append((pseu.pop(),i))
+        if seq[i]=='{':
+            pseularg.append(i)
+        if seq[i]=='}':
+            pseularg1.append((pseularg.pop(),i))
+        if seq[i]=='<':
+            pseupk.append(i)
+        if seq[i]=='>':
+            pseupk1.append((pseupk.pop(),i))
+
+    return struc+pseu1+pseularg1+pseupk1,ustruc
+
+def calculate__pseudo_mfe_and_str_RNApKplex(sequence):
+    rnafold= pseudoknot_RNApKplex(sequence)
+    mfe=rnafold[1]
+    str_v=rnafold[0]
+    return mfe,str_v
+
+def calculate__pseudo_mfe_and_str_pkiss(sequence):
+    mfe,str_v= pseudoknot_pkiss(sequence)
+    #mfe=rnafold[1]
+    #str_v=rnafold[0]
+    return mfe,str_v
+
+def pseudoknot_RNApKplex(se):
+
+    cmd = ["RNAPKplex","-e","-8.10"]
+    #tmpdir = mkdtemp()
+
+    p = Popen(cmd, stdin = PIPE, stdout = PIPE)
+    print >> p.stdin, se
+    p.stdin.close()
+    t = p.stdout.readlines()[-1].strip().split(None, 1)
+    p.stdout.close()
+    return t
+
+
+def checkForpKiss(self):
+    pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE,shell=True).communicate()[0].strip()
+    if not (len(pKiss_output) > 0 and pKiss_output.find("found") == -1 and pKiss_output.find(" no ") == -1):
+        self.error = "No pKiss found\nIt seems that pKiss is not installed on your machine. Please do so!\nYou can get it at http://bibiserv2.cebitec.uni-bielefeld.de/pkiss"
+
+
+def pseudoknot_pkiss(se):
+
+    cmd = ["pKiss_mfe",se]
+    #tmpdir = mkdtemp()
+
+    p = Popen(cmd, stdin = PIPE, stdout = PIPE)
+    #print >> p.stdin, se
+    #p.stdin.close()
+    t = p.stdout.read().split("\n");
+    #structure = "." * len(se)
+    if (len(t) > 1):
+        mfe = "".join(t[1].split(" ")[1])
+        structure= "".join(t[1].split(" ")[3])
+    #print structure
+    p.stdout.close()
+    return mfe, structure
+
+
+
+
+
+
+
 if __name__ == "__main__":
 
     BASEPAIRS = ["AU", "CG", "GC", "UA"]
@@ -1099,8 +1195,8 @@ if __name__ == "__main__":
     defined_gd=float(getattr(parsed_args,'d'))
     defined_pseudo=float(getattr(parsed_args,'pk'))
     if defined_pseudo==1:
-        str_index1,str_uindex1,pseu12=calculate__pseudo_sequence_position(s)
-        str_index=str_index1+pseu12
+        str_index1,str_uindex1=calculate__pseudo_sequence_position_pKiss(s)
+        str_index=str_index1
         str_uindex=str_uindex1
     else:
         str_index,str_uindex=calculate_sequence_position(s)
@@ -1114,17 +1210,16 @@ if __name__ == "__main__":
     if defined_GC<=1.0 and defined_GC>=0.0:
         best_str,GC,run_time=UCTRNA()
         if best_str==1.0:
-
-           print "running time:"+str(run_time)
-           print "GC content:"+str(GC)
-           print "GC distance:"+str(abs(GC-defined_GC))
-           print "structure distance:" +str(best_str)
+            print "running time:"+str(run_time)
+            print "GC content:"+str(GC)
+            print "GC distance:"+str(abs(GC-defined_GC))
+            print "structure distance:" +str(best_str)
 
         else:
-           print "running time:"+str(run_time)
-           print "GC content:"+str(GC)
-           print "GC distance:"+str(abs(GC-defined_GC))
-           print "structure distance:" +str(best_str)
+            print "running time:"+str(run_time)
+            print "GC content:"+str(GC)
+            print "GC distance:"+str(abs(GC-defined_GC))
+            print "structure distance:" +str(best_str)
 
     else:
         UCTRNAnoGC()
