@@ -517,6 +517,7 @@ def UCTRNAnoGC():
     print "running time:" + str(finish_time)
     print "GC-content:"+str(GC)
     print "structure distance:" + str(goal)
+    
 
 def calculate_structure_distance(structure_s, str_length ,some_str_value):
     sdt=0.0
@@ -525,6 +526,31 @@ def calculate_structure_distance(structure_s, str_length ,some_str_value):
         if some_str_value[i]!=s[i]:
             sd=sd+1
         sdt=(str_length-sd)/str_length
+    return sdt
+
+
+def calculate_structure_distance_pKiss(structure_s, str_length ,some_str_value):
+    paired_str=str_index
+    unpaired_str=str_uindex
+    struc,ustruc=calculate__pseudo_sequence_position_pKiss(some_str_value)
+    structure_s_new=struc+ustruc
+    #print structure_s
+    #print structure_s_new
+    #print paired_str_new
+    #print paired_str
+    sdt=0.0
+    sd=0.0
+    for i in range(len(str_index)):
+        if paired_str[i] not in struc:
+            #print structure_s[i]
+            sd=sd+1
+    for i in range(len(str_uindex)):
+        if unpaired_str[i] not in ustruc:
+            sd=sd+1
+    #for i in range(len())
+    #for i in range(len(paired_str_new)):
+
+    sdt=(len(structure_s)-sd)/len(structure_s)
     return sdt
 
 
