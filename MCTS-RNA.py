@@ -832,6 +832,94 @@ def check_GC_base(some_dif_ini,predicted_seq,posl):## assign GC or CG to predict
     return predicted_seq
 
 
+def update(paired_pos,dif_ini,posl,predicted_seq):
+    a1=calculate_a(paired_pos)
+    a2=calculate_a(str_index)
+    #a3=calculate_a(posl)
+    even=a1[::2]
+    odd=a1[1::2]
+    new_paired_pos=[]
+    updated_weaken_pairs_position=[]
+    check_odd=[]
+    check_even=[]
+    #new_even=[]
+    #new_odd=[]
+    for i in range(len(even)):
+        if even[i] and odd[i] not in posl:
+            new_paired_pos.append(paired_pos[i])
+    #print new_paired_pos
+
+    a_new=calculate_a(new_paired_pos)
+    #print a_new
+    new_even=a_new[::2]
+    new_odd=a_new[1::2]
+    #print new_odd
+    #print new_even
+    for i in range(len(new_even)):
+        if new_even[i] and new_odd[i] not in a2:
+            updated_weaken_pairs_position.append(new_paired_pos[i])
+
+    a_final=calculate_a(updated_weaken_pairs_position)
+    final_even=a_final[::2]
+    final_odd=a_final[1::2]
+    A_change=["G","C"]
+    C_change=["A","U"]
+    U_change=["U","C"]
+    G_change=["A","G"]
+
+    for i in range(len(final_even)):
+        #print predicted_seq
+        if predicted_seq[final_even[i]]=="A":
+            #print predicted_seq
+            predicted_seq[final_odd[i]]=random.choice(A_change)
+        if predicted_seq[final_even[i]]=="U":
+            predicted_seq[final_odd[i]]=random.choice(U_change)
+        if predicted_seq[final_even[i]]=="C":
+            predicted_seq[final_odd[i]]=random.choice(C_change)
+        if predicted_seq[final_even[i]]=="G":
+            predicted_seq[final_odd[i]]=random.choice(G_change)
+
+
+    GC=["G","C"]
+    AU=["A","U"]
+    new_dif_ini=[]
+    for i in range(len(dif_ini)):
+        if dif_ini[i] not in posl:
+            new_dif_ini.append(dif_ini[i])
+    a_ini=calculate_a(new_dif_ini)
+    #for i in range(len(some_dif_ini)):
+
+
+
+
+    even_ini=a_ini[::2]
+    odd_ini=a_ini[1::2]
+
+    for i in range(len(even_ini)):
+        if predicted_seq[odd_ini[i]]=="G":
+            predicted_seq[even_ini[i]]="C"
+        if predicted_seq[odd_ini[i]]=="C":
+            predicted_seq[even_ini[i]]="G"
+
+        if predicted_seq[odd_ini[i]]=="A":
+            predicted_seq[even_ini[i]]="U"
+        if predicted_seq[odd_ini[i]]=="U":
+            predicted_seq[even_ini[i]]="A"
+
+
+
+
+
+
+    return predicted_seq
+
+
+
+
+
+
+
+
 
 def check_GC_base3(some_dif_ini,predicted_seq,posl,defined_GC):## assign GC or CG to predicted sequence
     GC=["G","C"]
