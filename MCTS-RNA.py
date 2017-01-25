@@ -9,6 +9,7 @@ import itertools
 import time
 import math
 import argparse
+import subprocess
 
 class RNAstructure:
 
@@ -147,7 +148,7 @@ class Node:
         self.untriedubpp=state.Getubpp()
         self.untriedbpp=state.Getbpp()
         self.untriedPositions=state.GetPositions()
- 
+
 
     def Selectnode(self):
 
@@ -501,7 +502,7 @@ def UCTRNAnoGC():
     print "running time:" + str(finish_time)
     print "GC-content:"+str(GC)
     print "structure distance:" + str(goal)
-    
+
 
 def calculate_structure_distance(structure_s, str_length ,some_str_value):
     sdt=0.0
@@ -1221,6 +1222,20 @@ def calculate__pseudo_mfe_and_str_pkiss(sequence):
     mfe,str_v= pseudoknot_pkiss(sequence)
     return mfe,str_v
 
+def checkpKiss():
+	"""
+		Checking for the presence of pKiss
+	"""
+  	#pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE).communicate()[0].strip()
+  	pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE, shell=True).communicate()[0].strip()
+	if len(pKiss_output) > 0 and pKiss_output.find("found") == -1 and pKiss_output.find(" no ") == -1:
+		return True
+	else:
+		print "It seems that pKiss is not installed on your machine. Please do so!"
+		print "You can get it at http://bibiserv2.cebitec.uni-bielefeld.de/pkiss"
+		exit(0)
+
+
 def pseudoknot_RNApKplex(se):
 
     cmd = ["RNAPKplex","-e","-8.10"]
@@ -1231,11 +1246,19 @@ def pseudoknot_RNApKplex(se):
     p.stdout.close()
     return t
 
-def checkForpKiss(self):
-    pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE,shell=True).communicate()[0].strip()
-    if not (len(pKiss_output) > 0 and pKiss_output.find("found") == -1 and pKiss_output.find(" no ") == -1):
-        self.error = "Please install Pkiss"
 
+
+def checkRNAfold():
+	"""
+	Checking for the presence of the Vienna tools in the system by which'ing for RNAfold and RNAdistance
+	"""
+	RNAfold_output = subprocess.Popen(["which", "RNAfold"], stdout=subprocess.PIPE).communicate()[0].strip()
+	if len(RNAfold_output) > 0 and RNAfold_output.find("found") == -1 and RNAfold_output.find(" no ") == -1:
+		return True
+	else:
+		print "It seems the Vienna RNA Package is not installed on your machine. Please do so!"
+		print "You can get it at http://www.tbi.univie.ac.at/"
+		exit(0)
 
 def pseudoknot_pkiss(se):
 
@@ -1271,10 +1294,12 @@ if __name__ == "__main__":
     defined_gd=float(getattr(parsed_args,'d'))
     defined_pseudo=float(getattr(parsed_args,'pk'))
     if defined_pseudo==1:
+        checkpKiss()
         str_index1,str_uindex1=calculate__pseudo_sequence_position_pKiss(s)
         str_index=str_index1
         str_uindex=str_uindex1
     else:
+        checkRNAfold()
         str_index,str_uindex=calculate_sequence_position(s)
     midea=getbasepairs(str_index)#### this is global varable
     copy_str_uindex=getunbases(str_uindex)# unpaired bases ## this is global varable
