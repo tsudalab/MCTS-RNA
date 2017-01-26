@@ -12,7 +12,7 @@ They need to be installed in the PATH variable of your computer.
 You can download the python script MCTS-RNA.py and save it in the executable paths of your computer, run this script from the shell. 
 
 
-[Arbitrary Link Text](Wiki Page Name)
+[I'm an inline-style link](https://www.google.com)
 
 
 
