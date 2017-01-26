@@ -1,18 +1,16 @@
 # MCTS-RNA
 MCTS-RNA is a tool for RNA inverse folding problem based on Monte Carlo Tree Search method. MCTS-RNA can design nested RNA structures and pseudoknot structures with user designed constraints: wide range and precise GC-content constraint and GC-content devation constraint. 
 # Requirements
-1.For the usage of MCTS-RNA, the program RNAfold of the ViennaRNA Package version 2.1.9 with python interface and Pkiss are required.
-They need to be installed in the PATH variable of your computer.
+1.RNAfold of [ViennaRNA Package](https://www.tbi.univie.ac.at/RNA/index.html). needs to be installed for designing nested structures.
 
-2.Python required version is at least version 2.7
+2.pKiss is required for designing pseudoknot structures. 
+
+2.Python required version is at least version 2.7.
 
 3.Python library of Numpy need to be installed.
 
 # Installation
 You can download the python script MCTS-RNA.py and save it in the executable paths of your computer, run this script from the shell. 
-
-
-[I'm an inline-style link](https://www.google.com)
 
 
 
