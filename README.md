@@ -30,5 +30,5 @@ python MCTS-RNA.py -f -s "....(((((.[[[[.))))).........]]]]..." -GC 0.4 -d 0.02 
 
 -d : The GC-content deviation of the solution, which is in range [0,0.02]. MCTS-RNA can output the sequence with more accurate GC-content with smaller GC-content devation setting, the default value of the GC-content devation is 0.01.
 
--pk: Degin nested structure by setting -pk 0 and design pseudoknot structure by setting -pk 1 (currently MCTS-RNA only uses Pkiss) to predict pseudoknot structures. 
+-pk: Design nested structure by setting -pk 0 and design pseudoknot structure by setting -pk 1 (currently MCTS-RNA only uses Pkiss) to predict pseudoknot structures. 
 
