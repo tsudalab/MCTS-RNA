@@ -1,13 +1,13 @@
 # MCTS-RNA
 MCTS-RNA is a tool for RNA inverse folding problem based on Monte Carlo Tree Search method. MCTS-RNA can design nested RNA structures and pseudoknot structures with user designed constraints: wide range and precise GC-content constraint and GC-content devation constraint. 
 # Requirements
-1.RNAfold of [ViennaRNA Package](https://www.tbi.univie.ac.at/RNA/index.html). needs to be installed for designing nested structures.
+1.RNAfold of [ViennaRNA Package](https://www.tbi.univie.ac.at/RNA/index.html) needs to be installed for designing nested structures.
 
-2.pKiss is required for designing pseudoknot structures. 
+2.[pKiss](http://bibiserv2.cebitec.uni-bielefeld.de/pkiss) is required for designing pseudoknot structures. 
 
-2.Python required version is at least version 2.7.
+2.[Python](https://www.python.org/) required version is at least version 2.7.
 
-3.Python library of Numpy need to be installed.
+3.Python library of [Numpy](http://www.numpy.org/) need to be installed.
 
 # Installation
 You can download the python script MCTS-RNA.py and save it in the executable paths of your computer, run this script from the shell. 
@@ -30,5 +30,5 @@ python MCTS-RNA.py -f -s "....(((((.[[[[.))))).........]]]]..." -GC 0.4 -d 0.02 
 
 -d : The GC-content deviation of the solution, which is in range [0,0.02]. MCTS-RNA can output the sequence with more accurate GC-content with smaller GC-content devation setting, the default value of the GC-content devation is 0.01.
 
--pk: degin psudoknot-free structure by setting -pk 0 and design pseudoknot structure by setting -pk 1 (currently MCTS-RNA only uses Pkiss) to predict pseudoknot structures. 
+-pk: Degin nested structure by setting -pk 0 and design pseudoknot structure by setting -pk 1 (currently MCTS-RNA only uses Pkiss) to predict pseudoknot structures. 
 
