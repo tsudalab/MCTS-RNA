@@ -1285,8 +1285,8 @@ if __name__ == "__main__":
     #parser.add_argument('-f', dest='action', action='store_const',const=None,help="monte carlo tree search for RNA inverse folding")
     parser.add_argument('-s',help="input the dot-branket representation of the RNA secondary structure")
     parser.add_argument('-GC',default=0.5,help="input the target GC content,the default GC-content is 0.5")
-    parser.add_argument('-d',default=0.01,help="input the GC content error range [0, 0.02],the default GC-content error is 0.01, we recommend to choose 0.01")
-    parser.add_argument('-pk',default=1, help="this is for handling pseduoknot structures, you can use different pseduoknot prediction software, value=1 means choose pKiss")
+    parser.add_argument('-d',default=0.01,help="input the GC content error range [0, 0.02],the default GC-content error is 0.01 for nested structures, 0.02 for pseudoknot structures")
+    parser.add_argument('-pk',default=0, help="this is for handling pseduoknot structures, you can use different pseduoknot prediction software, value=1 means choose pKiss, value=0 means choose RNAfold")
 
     parsed_args = parser.parse_args()
     s=getattr(parsed_args, 's')
