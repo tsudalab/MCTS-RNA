@@ -1282,7 +1282,7 @@ if __name__ == "__main__":
     BASEPAIRS = ["AU", "CG", "GC", "UA"]
     bases="AGCU"
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', dest='action', action='store_const',const=None,help="monte carlo tree search for RNA inverse folding")
+    #parser.add_argument('-f', dest='action', action='store_const',const=None,help="monte carlo tree search for RNA inverse folding")
     parser.add_argument('-s',help="input the dot-branket representation of the RNA secondary structure")
     parser.add_argument('-GC',default=2.0,help="input the target GC content,the default GC-content is 0.5")
     parser.add_argument('-d',default=0.02,help="input the GC content error range [0, 0.02],the default GC-content error is 0.02, we recommend to choose 0.01")
