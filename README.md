@@ -18,10 +18,10 @@ You can download the python script MCTS-RNA.py and save it in the executable pat
 Once you downloaded the python script of MCTS-RNA and having installed all the requirements, you can execute MCTS-RNA from the shell. The inputs include the dot-bracket representation of target RNA secondary structure ,the target GC-content of the RNA sequence and GC-content error. The following are the examples and explanations of the inputs parameters.
 
 This is an example of the command in the shell for nested RNA structures.
-python MCTS-RNA.py -f -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01 -pk 0
+python MCTS-RNA.py -s "...(((((..........)))))........((((((((......))))))))(((((.......))))).............(((((..(((((..((..((.(((((.(((((.......))))).)))))...))....))))))))))))" -GC 0.75 -d 0.01 -pk 0
 
 This is an example of the command in the shell for pseudoknot RNA structures.
-python MCTS-RNA.py -f -s "....(((((.[[[[.))))).........]]]]..." -GC 0.4 -d 0.02 -pk 1
+python MCTS-RNA.py -s "....(((((.[[[[.))))).........]]]]..." -GC 0.4 -d 0.02 -pk 1
 
 
 -s : The target RNA secondary structure.
