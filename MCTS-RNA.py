@@ -170,7 +170,7 @@ class Node:
         self.wins += result
 
 
-def MCTS(root, itermax, k, verbose = False):
+def MCTS(root, k, verbose = False):
 
 
     running_time=time.time()
@@ -179,9 +179,7 @@ def MCTS(root, itermax, k, verbose = False):
     state = root.Clone() # but this state is the state of the initialization .  too important !!!
 
 
-    for i in range(itermax):
-        if time.time() >= out_time:
-            break
+    while time.time()<=out_time:
 
         node = rootnode # important !    this node is different with state / node is the tree node
         state = root.Clone() # but this state is the state of the initialization .  too important !!!
@@ -364,7 +362,7 @@ def UCTRNA():
     state = RNAstructure()
     print "search length:" + str(state.n) + "\n"
     k=random.choice(state.GetPositions())
-    m,goal,GCC = MCTS(root = state, itermax = 1000000, k=k, verbose = False)
+    m,goal,GCC = MCTS(root = state, k=k, verbose = False)
     print "Solution:" + str(m)
     if goal==1.0:
         finish_time=time.time()-one_search_start_time
