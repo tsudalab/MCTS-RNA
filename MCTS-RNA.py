@@ -1221,16 +1221,14 @@ def calculate__pseudo_mfe_and_str_pkiss(sequence):
     return mfe,str_v
 
 def checkpKiss():
-	"""
-		Checking for the presence of pKiss
-	"""
+
   	#pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE).communicate()[0].strip()
   	pKiss_output = subprocess.Popen(["which", "pKiss_mfe"], stdout=subprocess.PIPE, shell=True).communicate()[0].strip()
 	if len(pKiss_output) > 0 and pKiss_output.find("found") == -1 and pKiss_output.find(" no ") == -1:
 		return True
 	else:
-		print "It seems that pKiss is not installed on your machine. Please do so!"
-		print "You can get it at http://bibiserv2.cebitec.uni-bielefeld.de/pkiss"
+		print "Please install pKiss"
+		print "Download from http://bibiserv2.cebitec.uni-bielefeld.de/pkiss"
 		exit(0)
 
 
@@ -1247,15 +1245,13 @@ def pseudoknot_RNApKplex(se):
 
 
 def checkRNAfold():
-	"""
-	Checking for the presence of the Vienna tools in the system by which'ing for RNAfold and RNAdistance
-	"""
+	
 	RNAfold_output = subprocess.Popen(["which", "RNAfold"], stdout=subprocess.PIPE).communicate()[0].strip()
 	if len(RNAfold_output) > 0 and RNAfold_output.find("found") == -1 and RNAfold_output.find(" no ") == -1:
 		return True
 	else:
-		print "It seems the Vienna RNA Package is not installed on your machine. Please do so!"
-		print "You can get it at http://www.tbi.univie.ac.at/"
+		print "Please install RNAfold"
+		print "Download from http://www.tbi.univie.ac.at/"
 		exit(0)
 
 def pseudoknot_pkiss(se):
