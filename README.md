@@ -10,8 +10,7 @@ MCTS-RNA is a tool for RNA inverse folding problem based on Monte Carlo Tree Sea
 3.Python library of [Numpy](http://www.numpy.org/) need to be installed.
 
 # Installation
-You can download the python script MCTS-RNA.py and save it in the executable paths of your computer, run this script from the shell. 
-
+You can download the python script MCTS-RNA.py, run this script from the shell. 
 
 
 # How to use MCTS-RNA?
